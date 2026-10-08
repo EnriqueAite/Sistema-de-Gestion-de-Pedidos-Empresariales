@@ -1,0 +1,89 @@
+<div class="container-fluid px-4 pt-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h2 class="mb-0">Sistema de Gestión de Pedidos - SIGEP</h2>
+      <p class="mb-0">Ud se ha identificado como: <strong>{{ nombre }}</strong></p>
+    </div>
+    <button class="btn btn-danger" (click)="cerrarSesion()">Cerrar Sesión</button>
+  </div>
+
+  @if (usuario === 'admin') {
+    <div class="row mb-3">
+      <div class="col-auto">
+        <button class="btn btn-primary me-2" (click)="ir('/productos')">Mantenimiento de Productos</button>
+        <button class="btn btn-success" (click)="ir('/clientes')">Mantenimiento de Clientes</button>
+      </div>
+    </div>
+
+    <div class="card p-3 mb-4">
+      <h5>Registrar Nuevo Pedido</h5>
+      <div class="d-flex gap-2 flex-wrap">
+        <select class="form-select" style="width:200px" [(ngModel)]="pedido.id_cliente">
+          <option value="">Seleccione Cliente...</option>
+          @for (c of clientes; track c.id_cliente) {
+            <option [value]="c.id_cliente">{{ c.nombre }} {{ c.apellido }}</option>
+          }
+        </select>
+        <select class="form-select" style="width:200px" [(ngModel)]="pedido.id_producto">
+          <option value="">Seleccione Producto...</option>
+          @for (p of productos; track p.id_producto) {
+            <option [value]="p.id_producto">{{ p.nombre }}</option>
+          }
+        </select>
+        <input class="form-control" style="width:80px" type="number"
+               [(ngModel)]="pedido.cantidad" placeholder="0" min="1">
+        <button class="btn btn-primary" (click)="guardar()">Registrar Pedido</button>
+      </div>
+    </div>
+  }
+
+  @if (usuario === 'operativo') {
+    <div class="mb-3">
+      <button class="btn btn-primary" (click)="volver()">Volver al Dashboard</button>
+    </div>
+  }
+
+  <h5>Historial de Pedidos</h5>
+  <table class="table table-bordered table-sm">
+    <thead class="table-light">
+      <tr>
+        <th>Cliente</th>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>F. Pedido</th>
+        <th>F. Pago</th>
+        <th>Estado</th>
+        @if (usuario === 'admin') {
+          <th>Acción</th>
+          <th>Eliminar</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (p of pedidos; track p.id_pedido) {
+        <tr>
+          <td>{{ p.objCliente?.nombre }} {{ p.objCliente?.apellido }}</td>
+          <td>{{ p.objProducto?.nombre || '-' }}</td>
+          <td>{{ p.cantidad }}</td>
+          <td>{{ p.fecha_pedido | date:'dd/MM/yyyy' }}</td>
+          <td>{{ p.fecha_pago ? (p.fecha_pago | date:'dd/MM/yyyy') : '-' }}</td>
+          <td>
+            <span [class]="p.estado === 'PAGADO' ? 'badge bg-success' : 'badge bg-warning text-dark'">
+              {{ p.estado }}
+            </span>
+          </td>
+          @if (usuario === 'admin') {
+            <td>
+              @if (p.estado === 'EN ESPERA') {
+                <button class="btn btn-success btn-sm" (click)="pagar(p)">Pagar</button>
+              }
+            </td>
+            <td>
+              <button class="btn btn-danger btn-sm" (click)="eliminar(p.id_pedido)">Eliminar</button>
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,110 @@
+<div class="container-fluid px-4 pt-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h2 class="mb-0">Sistema de Gestión de Pedidos - SIGEP</h2>
+      <p class="mb-0">Ud se ha identificado como: <strong>Operativo</strong></p>
+    </div>
+    <button class="btn btn-danger" (click)="cerrarSesion()">Cerrar Sesión</button>
+  </div>
+
+  <div class="row mb-4">
+
+    <!-- ENTRADA -->
+    <div class="col-md-6">
+      <div class="card border-success">
+        <div class="card-header bg-success text-white">
+          <h6 class="mb-0">Registrar Entrada de Stock</h6>
+        </div>
+        <div class="card-body">
+          <div class="mb-2">
+            <label>Producto</label>
+            <select class="form-select" [(ngModel)]="movimientoEntrada.id_producto">
+              <option value="">Seleccione Producto...</option>
+              @for (p of productos; track p.id_producto) {
+                <option [value]="p.id_producto">{{ p.nombre }}</option>
+              }
+            </select>
+          </div>
+          <div class="mb-2">
+            <label>Cantidad</label>
+            <input class="form-control" type="number" [(ngModel)]="movimientoEntrada.cantidad"
+                   min="1" placeholder="0">
+          </div>
+          <div class="mb-3">
+            <label>Observación</label>
+            <input class="form-control" [(ngModel)]="movimientoEntrada.observacion"
+                   placeholder="Observación (opcional)">
+          </div>
+          <button class="btn btn-success" (click)="registrarEntrada()">Registrar Entrada</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SALIDA -->
+    <div class="col-md-6">
+      <div class="card border-warning">
+        <div class="card-header bg-warning">
+          <h6 class="mb-0">Registrar Salida de Stock</h6>
+        </div>
+        <div class="card-body">
+          <div class="mb-2">
+            <label>Producto</label>
+            <select class="form-select" [(ngModel)]="movimientoSalida.id_producto">
+              <option value="">Seleccione Producto...</option>
+              @for (p of productos; track p.id_producto) {
+                <option [value]="p.id_producto">{{ p.nombre }}</option>
+              }
+            </select>
+          </div>
+          <div class="mb-2">
+            <label>Cantidad</label>
+            <input class="form-control" type="number" [(ngModel)]="movimientoSalida.cantidad"
+                   min="1" placeholder="0">
+          </div>
+          <div class="mb-3">
+            <label>Observación</label>
+            <input class="form-control" [(ngModel)]="movimientoSalida.observacion"
+                   placeholder="Observación (opcional)">
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-warning" (click)="registrarSalida()">Registrar Salida</button>
+            <button class="btn btn-primary" (click)="ir('/pedidos')">Historial de Pedidos</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TABLA STOCK -->
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <h5 class="mb-0">Stock Actual de Productos</h5>
+    <button class="btn btn-info text-white" (click)="ir('/movimientos')">Historial de Movimientos</button>
+  </div>
+  <table class="table table-bordered table-sm">
+    <thead class="table-light">
+      <tr>
+        <th>Producto</th>
+        <th>Categoría</th>
+        <th>Empresa</th>
+        <th>Precio</th>
+        <th>Stock</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (p of productos; track p.id_producto) {
+        <tr>
+          <td>{{ p.nombre }}</td>
+          <td>{{ p.objCategoria?.nombre }}</td>
+          <td>{{ p.objEmpresa?.nombre }}</td>
+          <td>{{ p.precio }}</td>
+          <td>
+            <span [class]="p.stock <= 5 ? 'badge bg-danger' : 'badge bg-success'">
+              {{ p.stock }}
+            </span>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,95 @@
+<div class="container-fluid px-4 pt-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h2 class="mb-0">Sistema de Gestión de Pedidos - SIGEP</h2>
+      <p class="mb-0">Ud se ha identificado como: <strong>{{ nombre }}</strong></p>
+    </div>
+    <button class="btn btn-danger" (click)="cerrarSesion()">Cerrar Sesión</button>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card p-3 mb-3">
+        <h5>Mantenimiento de Productos</h5>
+        <div class="mb-2">
+          <label>ID</label>
+          <input class="form-control" [(ngModel)]="producto.id_producto"
+                 placeholder="ID (Automático)" readonly>
+        </div>
+        <div class="mb-2">
+          <label>Nombre</label>
+          <input class="form-control" [(ngModel)]="producto.nombre"
+                 placeholder="Nombre del producto">
+        </div>
+        <div class="row mb-2">
+          <div class="col">
+            <label>Precio</label>
+            <input class="form-control" type="number" [(ngModel)]="producto.precio" placeholder="0.00">
+          </div>
+          <div class="col">
+            <label>Stock</label>
+            <input class="form-control" type="number" [(ngModel)]="producto.stock" placeholder="0">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <label>Empresa</label>
+            <select class="form-select" [(ngModel)]="producto.id_empresa">
+              <option value="">Seleccione...</option>
+              @for (e of empresas; track e.id_empresa) {
+                <option [value]="e.id_empresa">{{ e.nombre }}</option>
+              }
+            </select>
+          </div>
+          <div class="col">
+            <label>Categoría</label>
+            <select class="form-select" [(ngModel)]="producto.id_categoria">
+              <option value="">Seleccione...</option>
+              @for (c of categorias; track c.id_categoria) {
+                <option [value]="c.id_categoria">{{ c.nombre }}</option>
+              }
+            </select>
+          </div>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-primary" (click)="guardar()">Guardar</button>
+          <button class="btn btn-secondary" (click)="volver()">Regresar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <h5>Listado de Productos</h5>
+      <table class="table table-bordered table-sm">
+        <thead class="table-light">
+          <tr>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Empresa</th>
+            <th>Categoría</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of productos; track p.id_producto) {
+            <tr>
+              <td>{{ p.nombre }}</td>
+              <td>{{ p.precio }}</td>
+              <td>
+                <span [class]="p.stock <= 5 ? 'badge bg-danger' : 'badge bg-success'">
+                  {{ p.stock }}
+                </span>
+              </td>
+              <td>{{ p.objEmpresa?.nombre }}</td>
+              <td>{{ p.objCategoria?.nombre }}</td>
+              <td><button class="btn btn-warning btn-sm" (click)="editar(p)">Editar</button></td>
+              <td><button class="btn btn-danger btn-sm" (click)="eliminar(p.id_producto)">Eliminar</button></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

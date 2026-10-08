@@ -1,0 +1,39 @@
+<div class="container-fluid px-4 pt-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h2 class="mb-0">Sistema de Gestión de Pedidos - SIGEP</h2>
+      <p class="mb-0">Ud se ha identificado como: <strong>Operativo</strong></p>
+    </div>
+    <button class="btn btn-danger" (click)="cerrarSesion()">Cerrar Sesión</button>
+  </div>
+
+  <button class="btn btn-primary mb-3" (click)="volver()">Volver al Dashboard</button>
+
+  <h5>Historial de Movimientos</h5>
+  <table class="table table-bordered table-sm">
+    <thead class="table-light">
+      <tr>
+        <th>Producto</th>
+        <th>Tipo</th>
+        <th>Cantidad</th>
+        <th>Fecha</th>
+        <th>Observación</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (m of movimientos; track m.id_movimiento) {
+        <tr>
+          <td>{{ m.objProducto?.nombre }}</td>
+          <td>
+            <span [class]="m.tipo === 'ENTRADA' ? 'badge bg-success' : 'badge bg-danger'">
+              {{ m.tipo }}
+            </span>
+          </td>
+          <td>{{ m.cantidad }}</td>
+          <td>{{ m.fecha | date:'dd/MM/yyyy' }}</td>
+          <td>{{ m.observacion || '-' }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

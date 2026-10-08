@@ -1,0 +1,18 @@
+<div class="container-fluid px-4 pt-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h2 class="mb-0">Sistema de Gestión de Pedidos - SIGEP</h2>
+      <p class="mb-0">Ud se ha identificado como: <strong>Admin</strong></p>
+    </div>
+    <button class="btn btn-danger" (click)="cerrarSesion()">Cerrar Sesión</button>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-auto">
+      <button class="btn btn-primary me-2" (click)="ir('/productos')">Mantenimiento de Productos</button>
+      <button class="btn btn-success" (click)="ir('/clientes')">Mantenimiento de Clientes</button>
+    </div>
+  </div>
+
+  <button class="btn btn-secondary mb-3" (click)="ir('/pedidos')">Ver Historial de Pedidos</button>
+</div>
